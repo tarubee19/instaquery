@@ -1,0 +1,128 @@
+# InstaQuery: Fine-tuning a Small Open LLM for Text-to-SQL (QLoRA → vLLM)
+
+[![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/tarubee19/instaquery/blob/main/notebooks/InstaQuery_Colab.ipynb)
+[![tests](https://github.com/tarubee19/instaquery/actions/workflows/ci.yml/badge.svg)](https://github.com/tarubee19/instaquery/actions/workflows/ci.yml)
+![Python](https://img.shields.io/badge/python-3.11%20%7C%203.12-blue)
+![License: MIT](https://img.shields.io/badge/license-MIT-green)
+
+**Ask a database a question in plain English and get the SQL.** InstaQuery fine-tunes
+`{{MODEL}}` with **QLoRA** on the Spider benchmark, measures it with
+**execution accuracy** against zero-shot, few-shot and **retrieval-augmented (RAG)** baselines,
+quantizes it to **4-bit**, and serves it with **vLLM** behind an OpenAI-compatible API.
+Everything runs on **one free Colab T4 GPU**.
+
+{{HEADLINE}}
+
+## Results
+
+All numbers below were produced by `notebooks/InstaQuery_Colab.ipynb` (run mode: `{{RUN_MODE}}`, GPU: {{GPU}}).
+
+{{RESULTS_TABLE}}
+
+![Execution accuracy by variant](assets/ex_by_variant.png)
+
+![Accuracy by Spider difficulty](assets/ex_by_difficulty.png)
+
+| Training | |
+|---|---|
+{{TRAIN_TABLE}}
+
+![Training loss](assets/training_loss.png)
+
+### Serving (vLLM vs Hugging Face generate, same GPU)
+
+{{BENCH_TABLE}}
+
+![Throughput](assets/throughput.png)
+
+{{ERROR_ANALYSIS}}
+
+{{FINDINGS}}
+
+## How it works
+
+```mermaid
+flowchart LR
+  A[Spider train<br/>8.6K question/SQL pairs] --> B[Prompt builder<br/>schema + sample values + question]
+  B --> C[QLoRA fine-tuning<br/>4-bit NF4 base + LoRA r=16]
+  C --> D[Merge LoRA into fp16]
+  D --> E[vLLM server<br/>OpenAI-compatible API]
+  D --> F[4-bit NF4 quantized model]
+  E --> G[Execution-accuracy evaluator<br/>Spider dev + quick-commerce DB]
+  F --> G
+  H[Baselines: zero-shot,<br/>few-shot, RAG few-shot] --> G
+```
+
+1. **Data.** [Spider 1.0](https://yale-lily.github.io/spider): 8,659 training questions over 146 databases and
+   1,034 dev questions over 20 *different* databases, so the dev score measures generalisation to unseen schemas.
+   A second test set is a synthetic **quick-commerce** SQLite database (dark stores, orders, inventory,
+   delivery partners; 7 tables, 25K orders) with 50 hand-written, execution-verified business questions.
+2. **Prompt.** The schema is serialised as `CREATE TABLE` statements with primary/foreign keys and three sample
+   values per text column (so the model can match literals). Very large schemas drop the sample values.
+3. **Baselines.** Same base model with (a) zero-shot prompting, (b) three fixed examples, and
+   (c) **RAG**: the three most similar training questions retrieved with dense embeddings
+   (`BAAI/bge-small-en-v1.5`), never from the same database.
+4. **QLoRA.** Base weights frozen in 4-bit NF4 with double quantisation; LoRA adapters (r=16, α=32, dropout 0.05)
+   on all attention and MLP projections; loss only on SQL tokens; cosine LR 2e-4, effective batch 16, 1 epoch,
+   paged 8-bit AdamW, gradient checkpointing.
+5. **Evaluation.** A prediction is correct if it returns the same result as the gold query when executed
+   (bag semantics, order-sensitive only with `ORDER BY`, column permutations allowed), following the official
+   Spider test-suite evaluator. Queries run read-only with a hard timeout. Difficulty labels and exact-set-match
+   come from the official evaluator.
+6. **Serving.** The LoRA weights are merged into an fp16 model, served with vLLM (continuous batching,
+   PagedAttention), and benchmarked at different concurrency levels against Hugging Face `generate`.
+7. **Quantisation.** The merged model is reloaded in 4-bit NF4 to measure the accuracy/memory trade-off.
+8. **Demo.** A Gradio app turns questions into SQL for the quick-commerce database, with guardrails
+   (sqlglot parse, single read-only `SELECT`, read-only connection, timeout, row cap).
+
+{{ENGINEERING}}
+
+## Reproduce
+
+Click the **Open in Colab** badge (or open `notebooks/InstaQuery_Colab.ipynb`), choose **Runtime → Change runtime type → T4 GPU**,
+set `RUN_MODE = "quick"` for a 20-minute smoke test or `"full"` for the complete run, then **Run all**.
+Outputs (metrics, predictions, charts, LoRA adapter) are saved to Google Drive.
+
+```bash
+pip install -r requirements.txt
+pytest -q            # unit tests for evaluator, prompts, schema, guardrails, domain DB
+python app/gradio_app.py --model <merged_model_dir> --db quickcommerce.sqlite
+```
+
+## Repository layout
+
+```
+src/instaquery/
+  spider_data.py   download + load Spider
+  schema.py        SQLite schema -> prompt text (keys, sample values)
+  prompts.py       chat prompts, SQL extraction/normalisation
+  retrieval.py     dense / TF-IDF retrieval of similar examples (RAG few-shot)
+  train.py         QLoRA fine-tuning + LoRA merge
+  generation.py    batched HF generation and async OpenAI-compatible client
+  serving.py       vLLM server in an isolated venv
+  sql_eval.py      execution accuracy with timeouts, error taxonomy
+  official_eval.py official Spider difficulty + exact-match
+  domain_db.py     synthetic quick-commerce database
+  safety.py        SQL guardrails for the demo
+  pipeline.py      cached evaluation runs and benchmarks
+  report.py        tables, charts, README, CV summary
+data/quickcommerce_eval.json   50 business questions with verified gold SQL
+notebooks/InstaQuery_Colab.ipynb  end-to-end Colab notebook (T4 GPU)
+results/                       metrics, benchmark, training stats from the full run
+assets/                        charts used in this README
+app/gradio_app.py              demo UI
+tests/                         pytest suite (runs in CI)
+```
+
+## Limitations
+
+* Spider dev is a public benchmark; scores are not comparable to the hidden Spider test leaderboard.
+* The quick-commerce set has 50 questions, so its numbers have wide confidence intervals (±7 pts at 95%).
+* The quick-commerce database is synthetic (fictional brands and people).
+* Exact-set-match is reported for reference only; execution accuracy is the main metric.
+
+## References
+
+Yu et al., *Spider* (EMNLP 2018) · Zhong et al., *Semantic Evaluation for Text-to-SQL with Distilled Test Suites* (EMNLP 2020) ·
+Hu et al., *LoRA* (2021) · Dettmers et al., *QLoRA* (2023) · Kwon et al., *vLLM / PagedAttention* (SOSP 2023) ·
+Hui et al., *Qwen2.5-Coder Technical Report* (2024).
