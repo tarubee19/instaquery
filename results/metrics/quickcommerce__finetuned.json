@@ -1,0 +1,35 @@
+{
+  "variant": "finetuned",
+  "dataset": "quickcommerce",
+  "shots": "zero",
+  "n": 50,
+  "execution_accuracy": 0.74,
+  "valid_sql_rate": 0.88,
+  "by_difficulty": {
+    "easy": {
+      "ex": 1.0,
+      "n": 15
+    },
+    "medium": {
+      "ex": 0.85,
+      "n": 20
+    },
+    "hard": {
+      "ex": 0.3333333333333333,
+      "n": 15
+    }
+  },
+  "error_breakdown": {
+    "correct": 37,
+    "unknown column": 5,
+    "wrong result (values)": 3,
+    "wrong result (row count)": 4,
+    "other execution error": 1
+  },
+  "generation_time_s": 4.243868112564087,
+  "examples_per_s": 11.78170449076248,
+  "avg_prompt_tokens": 993.2,
+  "avg_completion_tokens": 34.06,
+  "backend": "OpenAIGenerator",
+  "model_memory_gb": null
+}

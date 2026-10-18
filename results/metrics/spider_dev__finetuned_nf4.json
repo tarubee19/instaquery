@@ -1,0 +1,40 @@
+{
+  "variant": "finetuned_nf4",
+  "dataset": "spider_dev",
+  "shots": "zero",
+  "n": 1034,
+  "execution_accuracy": 0.7543520309477756,
+  "valid_sql_rate": 0.9323017408123792,
+  "by_difficulty": {
+    "easy": {
+      "ex": 0.875,
+      "n": 248
+    },
+    "medium": {
+      "ex": 0.7869955156950673,
+      "n": 446
+    },
+    "hard": {
+      "ex": 0.6666666666666666,
+      "n": 174
+    },
+    "extra": {
+      "ex": 0.5783132530120482,
+      "n": 166
+    }
+  },
+  "error_breakdown": {
+    "correct": 780,
+    "wrong result (row count)": 96,
+    "wrong result (values)": 88,
+    "unknown column": 63,
+    "unknown table": 6,
+    "other execution error": 1
+  },
+  "generation_time_s": 325.01567554473877,
+  "examples_per_s": 3.181385015559561,
+  "avg_prompt_tokens": 569.4332688588008,
+  "avg_completion_tokens": 28.036750483558993,
+  "backend": "HFGenerator",
+  "model_memory_gb": 1.122135552
+}

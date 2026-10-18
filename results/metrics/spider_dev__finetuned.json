@@ -1,0 +1,40 @@
+{
+  "variant": "finetuned",
+  "dataset": "spider_dev",
+  "shots": "zero",
+  "n": 1034,
+  "execution_accuracy": 0.7408123791102514,
+  "valid_sql_rate": 0.9245647969052224,
+  "by_difficulty": {
+    "easy": {
+      "ex": 0.907258064516129,
+      "n": 248
+    },
+    "medium": {
+      "ex": 0.7914798206278026,
+      "n": 446
+    },
+    "hard": {
+      "ex": 0.6264367816091954,
+      "n": 174
+    },
+    "extra": {
+      "ex": 0.4759036144578313,
+      "n": 166
+    }
+  },
+  "error_breakdown": {
+    "correct": 766,
+    "unknown column": 73,
+    "wrong result (values)": 87,
+    "wrong result (row count)": 103,
+    "other execution error": 4,
+    "unknown table": 1
+  },
+  "generation_time_s": 39.96202516555786,
+  "examples_per_s": 25.874564557633462,
+  "avg_prompt_tokens": 569.4332688588008,
+  "avg_completion_tokens": 27.02998065764023,
+  "backend": "OpenAIGenerator",
+  "model_memory_gb": null
+}
