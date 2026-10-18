@@ -1,0 +1,5 @@
+{
+  "data_prep_s": 41.522141456604004,
+  "vllm_startup_finetuned_s": 80.04807257652283,
+  "total_runtime_min": 129.08929116328557
+}

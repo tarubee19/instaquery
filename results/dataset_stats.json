@@ -1,0 +1,9 @@
+{
+  "train_questions": 8659,
+  "train_databases": 146,
+  "dev_questions": 1034,
+  "dev_databases": 20,
+  "quickcommerce_questions": 50,
+  "prompt_tokens_mean": 511.515,
+  "prompt_tokens_p95": 1091.0
+}

@@ -1,0 +1,16 @@
+{
+  "base_zeroshot": {
+    "easy": 0.831,
+    "medium": 0.361,
+    "hard": 0.282,
+    "extra": 0.145,
+    "all": 0.426
+  },
+  "finetuned": {
+    "easy": 0.867,
+    "medium": 0.677,
+    "hard": 0.437,
+    "extra": 0.373,
+    "all": 0.633
+  }
+}

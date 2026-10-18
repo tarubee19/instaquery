@@ -1,0 +1,47 @@
+{
+  "vllm": [
+    {
+      "concurrency": 1,
+      "requests": 200,
+      "wall_s": 107.58356447000006,
+      "req_per_s": 1.8590200183948218,
+      "output_tok_per_s": 53.2423333268277,
+      "p50_latency_s": 0.39877083899955323,
+      "p95_latency_s": 1.169609593000132,
+      "failed": 0
+    },
+    {
+      "concurrency": 8,
+      "requests": 200,
+      "wall_s": 15.69160979299977,
+      "req_per_s": 12.745664889603779,
+      "output_tok_per_s": 365.6093973582844,
+      "p50_latency_s": 0.47469258299952344,
+      "p95_latency_s": 1.3026413220004542,
+      "failed": 0
+    },
+    {
+      "concurrency": 32,
+      "requests": 200,
+      "wall_s": 7.986458857999423,
+      "req_per_s": 25.042387816181552,
+      "output_tok_per_s": 717.2139870554397,
+      "p50_latency_s": 0.7682631879997643,
+      "p95_latency_s": 2.099386308999783,
+      "failed": 0
+    }
+  ],
+  "hf_batched": {
+    "batch_size": 16,
+    "requests": 200,
+    "wall_s": 48.85604516800049,
+    "req_per_s": 4.09365922502043,
+    "output_tok_per_s": 117.42661486971103
+  },
+  "hf_single": {
+    "requests": 20,
+    "p50_latency_s": 0.5946507059998112,
+    "mean_latency_s": 0.6628312786499464
+  },
+  "hf_fp16_memory_gb": 3.08742912
+}

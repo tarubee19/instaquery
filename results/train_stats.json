@@ -1,0 +1,25 @@
+{
+  "train_examples": 8577,
+  "skipped_too_long": 82,
+  "total_train_tokens": 5592345,
+  "mean_seq_len": 652.0164393144456,
+  "steps": 537,
+  "steps_per_epoch": 537,
+  "epochs": 1.0,
+  "train_runtime_s": 5236.976844787598,
+  "prep_s": 66.8412139415741,
+  "final_train_loss": 0.11007667897222244,
+  "trainable_params": 18464768,
+  "total_params": 1562179072,
+  "peak_gpu_mem_gb": 5.236041216,
+  "gpu": "Tesla T4",
+  "lora": {
+    "r": 16,
+    "alpha": 32,
+    "dropout": 0.05
+  },
+  "effective_batch": 16,
+  "lr": 0.0002,
+  "train_runtime_total_s": 6316.976844787598,
+  "train_runtime_note": "resumed once from the step-100 checkpoint after a Colab disconnect"
+}
