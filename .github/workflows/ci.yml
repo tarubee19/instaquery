@@ -1,0 +1,21 @@
+name: tests
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: ["3.11", "3.12"]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+      - name: Install light test dependencies (no GPU stack needed)
+        run: pip install pytest numpy scikit-learn sqlglot sqlparse tqdm
+      - name: Run unit tests
+        run: pytest -q tests
