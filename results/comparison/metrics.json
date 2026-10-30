@@ -1,0 +1,408 @@
+[
+ {
+  "model": "finetuned-1.5b",
+  "dataset": "spider_dev",
+  "shots": "zero",
+  "repair": false,
+  "n": 1034,
+  "execution_accuracy": 0.741779497098646,
+  "ci95": [
+   0.714242442125265,
+   0.7675266447951282
+  ],
+  "valid_sql_rate": 0.9245647969052224,
+  "by_difficulty": {
+   "easy": 0.9112903225806451,
+   "medium": 0.7914798206278026,
+   "hard": 0.6264367816091954,
+   "extra": 0.4759036144578313
+  },
+  "error_breakdown": {
+   "correct": 767,
+   "unknown column": 73,
+   "wrong result (values)": 86,
+   "wrong result (row count)": 103,
+   "other execution error": 4,
+   "unknown table": 1
+  },
+  "generation_time_s": 38.1,
+  "retried": 0
+ },
+ {
+  "model": "finetuned-1.5b",
+  "dataset": "spider_dev",
+  "shots": "skeleton",
+  "repair": false,
+  "n": 1034,
+  "execution_accuracy": 0.7001934235976789,
+  "ci95": [
+   0.6715672173596259,
+   0.7273375866104597
+  ],
+  "valid_sql_rate": 0.8752417794970987,
+  "by_difficulty": {
+   "easy": 0.8830645161290323,
+   "medium": 0.7466367713004485,
+   "hard": 0.5632183908045977,
+   "extra": 0.4457831325301205
+  },
+  "error_breakdown": {
+   "correct": 724,
+   "unknown column": 111,
+   "wrong result (row count)": 99,
+   "wrong result (values)": 82,
+   "unknown table": 9,
+   "ambiguous column": 2,
+   "syntax error": 4,
+   "other execution error": 3
+  },
+  "generation_time_s": 76.6,
+  "retried": 0
+ },
+ {
+  "model": "finetuned-1.5b",
+  "dataset": "spider_dev",
+  "shots": "zero",
+  "repair": true,
+  "n": 1034,
+  "execution_accuracy": 0.7456479690522244,
+  "ci95": [
+   0.7182274193289448,
+   0.7712499729821747
+  ],
+  "valid_sql_rate": 0.9381044487427466,
+  "by_difficulty": {
+   "easy": 0.9153225806451613,
+   "medium": 0.7937219730941704,
+   "hard": 0.6379310344827587,
+   "extra": 0.4759036144578313
+  },
+  "error_breakdown": {
+   "correct": 771,
+   "wrong result (values)": 94,
+   "wrong result (row count)": 105,
+   "unknown column": 61,
+   "other execution error": 3
+  },
+  "generation_time_s": 28.5,
+  "repair_time_s": 11.8,
+  "retried": 78
+ },
+ {
+  "model": "qwen2.5-coder-1.5b",
+  "dataset": "spider_dev",
+  "shots": "zero",
+  "repair": false,
+  "n": 1034,
+  "execution_accuracy": 0.683752417794971,
+  "ci95": [
+   0.6547727341971591,
+   0.7113717718623397
+  ],
+  "valid_sql_rate": 0.8549323017408124,
+  "by_difficulty": {
+   "easy": 0.8790322580645161,
+   "medium": 0.7152466367713004,
+   "hard": 0.5344827586206896,
+   "extra": 0.463855421686747
+  },
+  "error_breakdown": {
+   "correct": 707,
+   "unknown column": 141,
+   "wrong result (values)": 73,
+   "wrong result (row count)": 104,
+   "other execution error": 5,
+   "unknown table": 4
+  },
+  "generation_time_s": 40.6,
+  "retried": 0
+ },
+ {
+  "model": "qwen2.5-coder-1.5b",
+  "dataset": "spider_dev",
+  "shots": "skeleton",
+  "repair": false,
+  "n": 1034,
+  "execution_accuracy": 0.625725338491296,
+  "ci95": [
+   0.595813585991459,
+   0.6547063392071456
+  ],
+  "valid_sql_rate": 0.8143133462282398,
+  "by_difficulty": {
+   "easy": 0.8387096774193549,
+   "medium": 0.6434977578475336,
+   "hard": 0.47701149425287354,
+   "extra": 0.41566265060240964
+  },
+  "error_breakdown": {
+   "correct": 647,
+   "unknown column": 176,
+   "wrong result (row count)": 108,
+   "wrong result (values)": 87,
+   "other execution error": 10,
+   "unknown table": 5,
+   "ambiguous column": 1
+  },
+  "generation_time_s": 76.5,
+  "retried": 0
+ },
+ {
+  "model": "qwen2.5-coder-1.5b",
+  "dataset": "spider_dev",
+  "shots": "zero",
+  "repair": true,
+  "n": 1034,
+  "execution_accuracy": 0.7050290135396519,
+  "ci95": [
+   0.6765147823122986,
+   0.732025403396195
+  ],
+  "valid_sql_rate": 0.8945841392649904,
+  "by_difficulty": {
+   "easy": 0.8790322580645161,
+   "medium": 0.742152466367713,
+   "hard": 0.5747126436781609,
+   "extra": 0.4819277108433735
+  },
+  "error_breakdown": {
+   "correct": 729,
+   "wrong result (values)": 85,
+   "wrong result (row count)": 111,
+   "unknown column": 104,
+   "unknown table": 4,
+   "other execution error": 1
+  },
+  "generation_time_s": 29.9,
+  "repair_time_s": 20.1,
+  "retried": 151
+ },
+ {
+  "model": "finetuned-1.5b",
+  "dataset": "bird_dev",
+  "shots": "zero",
+  "repair": false,
+  "n": 498,
+  "execution_accuracy": 0.3232931726907631,
+  "ci95": [
+   0.2837001540253215,
+   0.3655915746795129
+  ],
+  "valid_sql_rate": 0.6566265060240963,
+  "by_difficulty": {
+   "simple": 0.38205980066445183,
+   "moderate": 0.23333333333333334,
+   "challenging": 0.23404255319148937
+  },
+  "error_breakdown": {
+   "syntax error": 13,
+   "unknown column": 134,
+   "correct": 161,
+   "wrong result": 166,
+   "unknown table": 3,
+   "other execution error": 16,
+   "ambiguous column": 5
+  },
+  "generation_time_s": 62.6,
+  "retried": 0
+ },
+ {
+  "model": "finetuned-1.5b",
+  "dataset": "bird_dev",
+  "shots": "zero",
+  "repair": true,
+  "n": 498,
+  "execution_accuracy": 0.3493975903614458,
+  "ci95": [
+   0.3088196901124863,
+   0.39228121503367935
+  ],
+  "valid_sql_rate": 0.7228915662650602,
+  "by_difficulty": {
+   "simple": 0.4019933554817276,
+   "moderate": 0.28,
+   "challenging": 0.23404255319148937
+  },
+  "error_breakdown": {
+   "syntax error": 12,
+   "unknown column": 110,
+   "correct": 174,
+   "wrong result": 186,
+   "unknown table": 2,
+   "other execution error": 13,
+   "ambiguous column": 1
+  },
+  "generation_time_s": 38.3,
+  "repair_time_s": 27.6,
+  "retried": 170
+ },
+ {
+  "model": "qwen2.5-coder-1.5b",
+  "dataset": "bird_dev",
+  "shots": "zero",
+  "repair": false,
+  "n": 498,
+  "execution_accuracy": 0.29116465863453816,
+  "ci95": [
+   0.25298320756023457,
+   0.3325433809091151
+  ],
+  "valid_sql_rate": 0.5502008032128514,
+  "by_difficulty": {
+   "simple": 0.3388704318936877,
+   "moderate": 0.22666666666666666,
+   "challenging": 0.19148936170212766
+  },
+  "error_breakdown": {
+   "unknown column": 195,
+   "syntax error": 10,
+   "wrong result": 129,
+   "correct": 145,
+   "unknown table": 3,
+   "other execution error": 15,
+   "timeout": 1
+  },
+  "generation_time_s": 62.0,
+  "retried": 0
+ },
+ {
+  "model": "qwen2.5-coder-1.5b",
+  "dataset": "bird_dev",
+  "shots": "zero",
+  "repair": true,
+  "n": 498,
+  "execution_accuracy": 0.3453815261044177,
+  "ci95": [
+   0.3049460856409415,
+   0.38818417697578855
+  ],
+  "valid_sql_rate": 0.6566265060240963,
+  "by_difficulty": {
+   "simple": 0.3953488372093023,
+   "moderate": 0.2866666666666667,
+   "challenging": 0.2127659574468085
+  },
+  "error_breakdown": {
+   "unknown column": 158,
+   "syntax error": 9,
+   "wrong result": 155,
+   "correct": 172,
+   "unknown table": 1,
+   "timeout": 1,
+   "other execution error": 2
+  },
+  "generation_time_s": 36.3,
+  "repair_time_s": 50.8,
+  "retried": 226
+ },
+ {
+  "model": "finetuned-1.5b",
+  "dataset": "quickcommerce",
+  "shots": "zero",
+  "repair": false,
+  "n": 50,
+  "execution_accuracy": 0.74,
+  "ci95": [
+   0.6044657801100008,
+   0.8412862034863262
+  ],
+  "valid_sql_rate": 0.88,
+  "by_difficulty": {
+   "easy": 1.0,
+   "medium": 0.85,
+   "hard": 0.3333333333333333
+  },
+  "generation_time_s": 4.3,
+  "retried": 0
+ },
+ {
+  "model": "finetuned-1.5b",
+  "dataset": "quickcommerce",
+  "shots": "zero",
+  "repair": true,
+  "n": 50,
+  "execution_accuracy": 0.76,
+  "ci95": [
+   0.6258705062480763,
+   0.8570274759812779
+  ],
+  "valid_sql_rate": 0.94,
+  "by_difficulty": {
+   "easy": 1.0,
+   "medium": 0.85,
+   "hard": 0.4
+  },
+  "generation_time_s": 3.3,
+  "retried": 6
+ },
+ {
+  "model": "qwen2.5-coder-1.5b",
+  "dataset": "quickcommerce",
+  "shots": "zero",
+  "repair": false,
+  "n": 50,
+  "execution_accuracy": 0.7,
+  "ci95": [
+   0.562493877226366,
+   0.8089661091039063
+  ],
+  "valid_sql_rate": 0.86,
+  "by_difficulty": {
+   "easy": 0.9333333333333333,
+   "medium": 0.8,
+   "hard": 0.3333333333333333
+  },
+  "generation_time_s": 4.6,
+  "retried": 0
+ },
+ {
+  "model": "qwen2.5-coder-1.5b",
+  "dataset": "quickcommerce",
+  "shots": "zero",
+  "repair": true,
+  "n": 50,
+  "execution_accuracy": 0.76,
+  "ci95": [
+   0.6258705062480763,
+   0.8570274759812779
+  ],
+  "valid_sql_rate": 0.94,
+  "by_difficulty": {
+   "easy": 0.9333333333333333,
+   "medium": 0.85,
+   "hard": 0.4666666666666667
+  },
+  "generation_time_s": 4.7,
+  "retried": 7
+ },
+ {
+  "model": "qwen2.5-coder-0.5b",
+  "dataset": "spider_dev",
+  "shots": "zero",
+  "repair": false,
+  "n": 1034,
+  "execution_accuracy": 0.522,
+  "valid_sql_rate": 0.681,
+  "generation_time_s": 18
+ },
+ {
+  "model": "qwen2.5-coder-0.5b",
+  "dataset": "quickcommerce",
+  "shots": "zero",
+  "repair": false,
+  "n": 50,
+  "execution_accuracy": 0.52,
+  "valid_sql_rate": 0.7,
+  "generation_time_s": 3
+ },
+ {
+  "model": "qwen2.5-coder-0.5b",
+  "dataset": "bird_dev",
+  "shots": "zero",
+  "repair": false,
+  "n": 498,
+  "execution_accuracy": 0.12,
+  "valid_sql_rate": 0.297,
+  "generation_time_s": 28
+ }
+]
