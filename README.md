@@ -111,6 +111,25 @@ Examples fixed by fine-tuning:
    remain at 33–40%, so domain examples would be the next lever.
 
 
+## Follow-up study: other models, fixes for RAG, self-correction, and BIRD
+
+Full tables and method: [experiments/README.md](experiments/README.md) (notebook: `notebooks/InstaQuery_Model_Comparison.ipynb`).
+
+| | Spider dev | BIRD dev (498, harder, real-world DBs) |
+|---|---|---|
+| Qwen2.5-Coder-0.5B, zero-shot | 52.2% | 12.0% |
+| Qwen2.5-Coder-1.5B, zero-shot | 68.4% | 29.1% |
+| **+ QLoRA fine-tuning (this project)** | **74.2%** | **32.3%** |
+| + QLoRA + execution-guided self-correction | **74.6%** | **34.9%** |
+| Base 1.5B + naive RAG -> **skeleton RAG** (identifiers masked) | 54.5% -> 62.6% | - |
+
+* **The fine-tuning gain transfers** to BIRD, which it never saw (+3.2 points), though BIRD stays hard for a
+  1.5B model: most failures are still columns that do not exist.
+* **Masking identifiers in retrieved examples fixes most of the RAG failure** ("unknown table" errors 92 -> 5),
+  but extra examples from other databases still cost accuracy versus zero-shot. Not worth the tokens at 1.5B.
+* **Execution-guided self-correction** (one retry with the SQLite error) is the cheapest gain: +5.4 points on BIRD
+  for the base model, +2.6 for the fine-tuned one. It does nothing for wrong-but-valid SQL.
+
 ## How it works
 
 ```mermaid
@@ -187,10 +206,15 @@ src/instaquery/
   official_eval.py official Spider difficulty + exact-match
   domain_db.py     synthetic quick-commerce database
   safety.py        SQL guardrails for the demo
+  skeleton.py      SQL skeletons (masked identifiers) for skeleton RAG
+  repair.py        execution-guided self-correction
+  bird_data.py     BIRD dev download, stratified sample, official set-equality scoring
   pipeline.py      cached evaluation runs and benchmarks
   report.py        tables, charts, README, CV summary
 data/quickcommerce_eval.json   50 business questions with verified gold SQL
 notebooks/InstaQuery_Colab.ipynb  end-to-end Colab notebook (T4 GPU)
+notebooks/InstaQuery_Model_Comparison.ipynb  follow-up study (other models, skeleton RAG, self-correction, BIRD)
+experiments/                   comparison study code + report
 results/                       metrics, benchmark, training stats from the full run
 assets/                        charts used in this README
 app/gradio_app.py              demo UI
