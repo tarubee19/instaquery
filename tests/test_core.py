@@ -124,3 +124,43 @@ def test_pick_fixed_shots_deterministic():
         "SELECT T1.a FROM t AS T1 JOIN s AS T2 ON T1.id = T2.id ORDER BY T1.b DESC LIMIT 1"])]
     shots = pick_fixed_shots(pool)
     assert [s["question"] for s in shots] == ["q1", "q2", "q3"]
+
+
+# --------------------------------------------------------------- comparison-study helpers
+def test_sql_skeleton_masks_names_but_keeps_structure():
+    from instaquery.skeleton import sql_skeleton
+    s = sql_skeleton("SELECT T1.name FROM singer AS T1 JOIN concert AS T2 ON T1.id = T2.singer_id "
+                     "WHERE T2.year > 2014 AND T1.country = 'France'")
+    assert "singer" not in s and "concert" not in s and "France" not in s and "2014" not in s
+    assert s.startswith("SELECT t1.col1 FROM table1 AS t1 JOIN table2 AS t2 ON")
+    assert "<num>" in s and "<str>" in s
+
+
+def test_sql_skeleton_reuses_placeholders_for_repeated_names():
+    from instaquery.skeleton import sql_skeleton
+    s = sql_skeleton("SELECT country FROM singer WHERE age > 40 INTERSECT SELECT country FROM singer WHERE age < 30")
+    assert s.count("table1") == 2 and s.count("col1") == 2 and "table2" not in s
+
+
+def test_bird_match_uses_set_semantics(tmp_path):
+    import sqlite3
+    from instaquery.bird_data import bird_match
+    db = tmp_path / "t.sqlite"
+    con = sqlite3.connect(db)
+    con.executescript("CREATE TABLE t(a INT, b TEXT); INSERT INTO t VALUES (1,'x'),(2,'y'),(2,'y');")
+    con.close()
+    assert bird_match(db, "SELECT DISTINCT a FROM t", "SELECT a FROM t")[0] is True   # duplicates ignored
+    assert bird_match(db, "SELECT a FROM t WHERE a > 1", "SELECT a FROM t")[0] is False
+    assert bird_match(db, "SELECT nope FROM t", "SELECT a FROM t")[0] is False
+    assert bird_match(db, "SELECT a FROM t", "SELECT broken FROM t")[0] is None       # bad gold is skipped
+
+
+def test_mcnemar_and_wilson():
+    import sys
+    from pathlib import Path
+    sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "experiments"))
+    from compare_models import mcnemar, wilson
+    r = mcnemar([True] * 50 + [False] * 50, [True] * 40 + [False] * 10 + [True] * 30 + [False] * 20)
+    assert (r["fixed"], r["broke"]) == (30, 10) and r["p_value"] < 0.01
+    lo, hi = wilson(74, 100)
+    assert 0.64 < lo < 0.74 < hi < 0.83
